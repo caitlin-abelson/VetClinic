@@ -304,14 +304,22 @@ CREATE TABLE [dbo].[DrugType] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR DRUG TYPE HERE ***'
-
+print '' print '*** Inserting Records for DrugType'
+GO
+INSERT INTO [dbo].[DrugType]
+	([DrugTypeID], [Description])
+	Values
+	('Pill','Administered orally'),
+	('Liquid','Administered orally'),
+	('Injection','Administered through needle'),
+	('Rectal','Administered through rectum')
+GO
 
 
 print '' print ' ***Creating Drug Table'
 GO
 CREATE TABLE [dbo].[Drug] (
-	[DrugID]				[int]				NOT NULL,
+	[DrugID]				[int] IDENTITY			NOT NULL,
 	[DrugTypeID]			[nvarchar](50)		NOT NULL,
 	[Name]					[nvarchar](100)		NOT NULL,
 	[Description]			[nvarchar](1000)	NOT NULL,
@@ -320,13 +328,23 @@ CREATE TABLE [dbo].[Drug] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR DRUG HERE ***'
-
+print '' print '*** Inserting Records for Drug'
+GO
+INSERT INTO [dbo].[Drug]
+	([DrugTypeID], [Name], [Description])
+	Values
+	('Injection', 'Ivermectin', 'Deworming medication for dogs. Takes effect within 1-2 hours.'),
+	('Pill', 'Ketoconazole', 'Antifungal medication for dogs and cats. For both internal and external fungus.'),
+	('Pill', 'Prednisone', 'Steroid for both cats and dogs. Used to treat various conditions.'),
+	('Pill', 'Tramadol', 'Medication for pain management for both cats and dogs.'),
+	('Injection', 'Insulin', 'Used to treat diabetes in both cats and dogs.'),
+	('Rectal', 'Valium', 'Used to treat dogs that are have seizures.')
+GO
 
 print '' print ' ***Creating Prescription Table'
 GO
 CREATE TABLE [dbo].[Prescription] (
-	[PrescriptionID]		[int]				NOT NULL,
+	[PrescriptionID]		[int] IDENTITY			NOT NULL,
 	[DrugID]				[int]				NOT NULL,
 	[EmployeeID]			[int]				NOT NULL,
 	[PetID]					[int]				NOT NULL,
@@ -337,7 +355,18 @@ CREATE TABLE [dbo].[Prescription] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR PRESCRIPTION HERE ***'
+print '' print '*** Inserting Records for Prescription'
+GO
+INSERT INTO [dbo].[Prescription]
+	([DrugID], [EmployeeID], [PetID], [Dosage], [Directions])
+	Values
+	('100000', '100000', '10000', '5ml', 'Deworming medication for dogs. Takes effect within 1-2 hours.'),
+	('100002', '100001', '10002', '5mg', 'Antifungal medication for dogs and cats. For both internal and external fungus.'),
+	('100004', '100001', '10002', '4ml', 'Steroid for both cats and dogs. Used to treat various conditions.'),
+	('100003', '100002', '10002', '10mg', 'Medication for pain management for both cats and dogs.'),
+	('100001', '100000', '10001', '2mg', 'Used to treat diabetes in both cats and dogs.'),
+	('100005', '100002', '10000', '10mg', 'Used to treat dogs that are have seizures.')
+GO
 
 
 
