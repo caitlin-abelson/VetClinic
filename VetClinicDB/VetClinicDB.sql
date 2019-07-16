@@ -24,45 +24,74 @@ GO
 print '' print ' *********** TABLES START HERE *********** '
 
 
-print '' print ' ***Creating Account Ownwer Table'
+print '' print ' *** Creating Account Ownwer Table'
 GO
 CREATE TABLE [dbo].[AccountOwner] (
-	[AccountOwnerID]		[int]				NOT NULL,
-	[FirstName]				[nvarchar](50)		NOT NULL,
-	[LastName]				[nvarchar](150)		NOT NULL,
+	[AccountOwnerID]		[int] IDENTITY(10000, 1)	NOT NULL,
+	[FirstName]				[nvarchar](50)				NOT NULL,
+	[LastName]				[nvarchar](150)				NOT NULL,
 	[Email]					[nvarchar](250)				,
-	[Password]				[nvarchar](100)		NOT NULL,
-	[Address]				[nvarchar](250)		NOT NULL,
-	[City]					[nvarchar](50)		NOT NULL,
-	[State]					[nvarchar](2)		NOT NULL DEFAULT 'IA',
-	[Zipcode]				[nvarchar](10)		NOT NULL,
-	[DateCreated]			[date]				NOT NULL,
-	[Active]				[bit]				NOT NULL DEFAULT 1,
+	[Password]				[nvarchar](100)				NOT NULL DEFAULT
+		'9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e',
+	[Address]				[nvarchar](250)				NOT NULL,
+	[City]					[nvarchar](50)				NOT NULL,
+	[State]					[nvarchar](2)				NOT NULL DEFAULT 'IA',
+	[Zipcode]				[nvarchar](10)				NOT NULL,
+	[DateCreated]			[date]						NOT NULL,
+	[Active]				[bit]						NOT NULL DEFAULT 1,
 	
 	CONSTRAINT [pk_AccountOwnerID] PRIMARY KEY([AccountOwnerID] ASC),
 	CONSTRAINT [ak_Email] UNIQUE([Email] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR ACCOUNT OWNER HERE ***'
+print '' print '*** Inserting Account Owner Test Records ***'
+INSERT INTO [dbo].[AccountOwner]
+		([FirstName], [LastName], [Email], [Address], [City], [Zipcode], [DateCreated])
+	VALUES
+		('Danielle', 'Russo', 'drusso@gmail.com', '123 Fake St SW', 'Cedar Rapids', '52404', '2004-08-12'),
+		('Caitlin', 'Abelson', 'cableman@yahoo.com', '524 1st Ave', 'Iowa City', '52243', '2010-03-25'),
+		('Miranda', 'Pilsbery', 'rlux@gmail.com', '11520 Como Rd', 'Cedar Rapids', '52403', '2011-05-25'),
+		('Jeffree', 'Star', 'teaspill@hotmail.com', '1  Maquillaje Ct NE', 'Cedar Rapids', '52404', '2018-01-11'),
+		('Peter', 'Quinn', 'pquinn@gmail.com', '500 18th St SE', 'Cedar Rapids', '52402', '2009-10-13')
+GO	
 
 
-print '' print ' ***Creating Order Table'
+print '' print ' *** Creating Order Table'
 GO
 CREATE TABLE [dbo].[Order] (
-	[OrderID]				[int]				NOT NULL,
-	[AccountOwnerID]		[int]				NOT NULL,
-	[DateCreated]			[date]				NOT NULL,
-	[Total]					[decimal](5,2)		NOT NULL,
+	[OrderID]				[int]IDENTITY(10000, 1)		NOT NULL,
+	[AccountOwnerID]		[int]						NOT NULL,
+	[DateCreated]			[date]						NOT NULL,
 	
 	CONSTRAINT [pk_OrderID] PRIMARY KEY([OrderID] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR ORDER HERE ***'
+print '' print '*** Inserting Order Test Records ***'
+INSERT INTO [dbo].[Order]
+		([AccountOwnerID], [DateCreated])
+	VALUES
+		(10000, '2018-03-15'),
+		(10000, '2018-06-12'),
+		(10000, '2019-01-08'),
+		(10000, '2019-05-26'),
+		(10001, '2019-01-15'),
+		(10001, '2018-02-15'),
+		(10001, '2018-04-30'),
+		(10001, '2018-07-29'),
+		(10002, '2018-07-15'),
+		(10002, '2018-07-26'),
+		(10003, '2017-07-15'),
+		(10003, '2018-02-28'),
+		(10003, '2018-12-15'),
+		(10004, '2019-03-18'),
+		(10004, '2019-04-23'),
+		(10004, '2010-06-04')
+GO
 
 
-print '' print ' ***Creating Item Type Table'
+print '' print ' *** Creating Item Type Table'
 GO
 CREATE TABLE [dbo].[ItemType] (
 	[ItemTypeID]			[nvarchar](50)		NOT NULL,
@@ -72,9 +101,22 @@ CREATE TABLE [dbo].[ItemType] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR ITEM TYPE HERE ***'
-
-
+print '' print '*** Inserting Item Type Test Records ***'
+INSERT INTO [dbo].[ItemType]
+		([ItemTypeID], [Description])
+	VALUES
+		('Puppy Food', 'Food for all dogs ages 2 years and younger.'),
+		('Adult Dog Food', 'Food for all dogs ages 2 years and older.'),
+		('Senior Dog Food', 'Food for all dogs ages 10 years and older.'),
+		('Weight Management Dog Food', 'Food for your chubby puppies.'),
+		('Kitten Food', 'Wet food formulated for kittens 6 months or younger.'),
+		('Dry Cat Food', 'Dry cat food'),
+		('Canned Cat Food', 'Wet cat food in 659 flavors.'),
+		('Weight Management Cat Food', 'Vegan and gluten free!.'),
+		('Cat Toys', 'Hair ties, paper bags, and cat nip.'),
+		('Dog Toys', 'Toys for dogs of all ages.')
+GO
+	
 print '' print ' ***Creating Item Table'
 GO
 CREATE TABLE [dbo].[Item] (
@@ -109,12 +151,22 @@ GO
 CREATE TABLE [dbo].[AppointmentType] (
 	[AppointmentTypeID]		[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](1000)	NOT NULL,
+	[AllotedTime]			int					NOT NULL,
 	
 	CONSTRAINT [pk_AppointmentTypeID] PRIMARY KEY([AppointmentTypeID] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR APPOINTMENT TYPE HERE ***'
+print '' print '*** Inserting Appointment Type Test Records ***'
+GO
+INSERT INTO [dbo].[AppointmentType]
+		([AppointmentTypeID], [Description], [AllotedTime])
+	VALUES
+		('General Checkup & Vaccination', 'Having your veterinarian perform an annual wellness exam with appropriate vaccinations will help your pets immune system against contagious diseases and allow for early detection of changes in your pets health.', 10),
+		('Sick Visit', 'Many reasons could explain loss of appetite or vomiting, including some serious conditions. Your veterinarian will be able to determine the exact cause in order find the solution that is best suited for your pet.', 20),
+		('Follow-up', 'Your pet just had a special treatment or a surgery that need a recommended follow-up.', 10),
+		('Tech', 'Keeping your pet comfortable and clean is an important of his/her health. We recommend the following regular visits.', 20)
+GO		
 
 
 
@@ -128,28 +180,47 @@ CREATE TABLE [dbo].[EmployeeType] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR EMPLOYEE TYPE HERE ***'
+print '' print '*** Inserting Employee Type Test Records ***'
+INSERT INTO [dbo].[EmployeeType]
+		([EmployeeTypeID], [Description])
+	VALUES
+		('Veterinarian', 'Liscensed veterinarian'),
+		('Veterinary Technician', 'Liscensed vet tech'),
+		('Receptionist', 'Check-ins, answers calls, make appointments')
+GO
 
 
 print '' print ' ***Creating Employee Table'
 GO
 CREATE TABLE [dbo].[Employee] (
-	[EmployeeID]			[int]				NOT NULL,
-	[EmployeeTypeID]		[nvarchar](50)		NOT NULL,
-	[FirstName]				[nvarchar](50)		NOT NULL,
-	[LastName]				[nvarchar](150)		NOT NULL,
-	[Email]					[nvarchar](250)		NOT NULL,
-	[Password]				[nvarchar](100)		NOT NULL,
-	[StartDate]				[date]				NOT NULL,
+	[EmployeeID]			[int] IDENTITY(10000, 1)	NOT NULL,
+	[EmployeeTypeID]		[nvarchar](50)				NOT NULL,
+	[FirstName]				[nvarchar](50)				NOT NULL,
+	[LastName]				[nvarchar](150)				NOT NULL,
+	[Email]					[nvarchar](250)				NOT NULL,
+	[Password]				[nvarchar](100)				NOT NULL DEFAULT
+		'9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e',
+	[StartDate]				[date]						NOT NULL,
 	[EndDate]				[date]						,
-	[Active]				[bit]				NOT NULL DEFAULT 1,
+	[Active]				[bit]						NOT NULL DEFAULT 1,
 	
 	CONSTRAINT [pk_EmployeeID] PRIMARY KEY([EmployeeID] ASC),
 	CONSTRAINT [ak_EmailEmployee] UNIQUE([Email] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR EMPLOYEE HERE ***'
+print '' print '*** Inserting Employee Test Records ***'
+INSERT INTO [dbo].[Employee]
+		([EmployeeTypeID], [FirstName], [LastName], [Email], [StartDate])
+	VALUES
+		('Veterinarian', 'June', 'Osborne', 'jbone@freyvet.com', '2009-04-20'),
+		('Veterinarian', 'Dexter', 'Morgan', 'dexmo@freyvet.com', '2014-08-10'),
+		('Veterinarian', 'Elliot', 'Skyrim', 'elderscrolls@freyvet.com', '2018-03-30'),
+		('Veterinarian Technician', 'Parker', 'Rexington', 'prex@freyvet.com', '2010-11-15'),
+		('Veterinarian Technician', 'Harvey', 'Rabbit', 'harvey@freyvet.com', '2019-03-01'),
+		('Receptionist', 'Tonya', 'Atari', 'tatari@freyvet.com', '2005-12-09'),
+		('Receptionist', 'Thomas', 'Chains', 'txchain@freyvet.com', '2014-08-23')
+GO
 
 
 print '' print ' ***Creating Pet Type Table'
@@ -161,7 +232,8 @@ CREATE TABLE [dbo].[PetType] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR PET TYPE HERE ***'
+print '' print '*** NEED TO DO: Inserting Pet Type Test Records ***'
+
 
 
 print '' print ' ***Creating Breed Table'
