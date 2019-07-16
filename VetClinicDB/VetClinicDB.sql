@@ -152,6 +152,18 @@ GO
 print '' print '*** NEED TO INSERT RECORDS FOR EMPLOYEE HERE ***'
 
 
+print '' print ' ***Creating Pet Type Table'
+GO
+CREATE TABLE [dbo].[PetType] (
+	[PetTypeID]			[nvarchar](50)		NOT NULL,
+	
+	CONSTRAINT [pk_PetTypeID] PRIMARY KEY([PetTypeID] ASC)
+)
+GO
+
+print '' print '*** NEED TO INSERT RECORDS FOR PET TYPE HERE ***'
+
+
 print '' print ' ***Creating Breed Table'
 GO
 CREATE TABLE [dbo].[Breed] (
@@ -163,19 +175,6 @@ CREATE TABLE [dbo].[Breed] (
 GO
 
 print '' print '*** NEED TO INSERT RECORDS FOR BREED HERE ***'
-
-
-
-print '' print ' ***Creating Pet Type Table'
-GO
-CREATE TABLE [dbo].[PetType] (
-	[PetTypeID]			[nvarchar](50)		NOT NULL,
-	
-	CONSTRAINT [pk_PetTypeID] PRIMARY KEY([PetTypeID] ASC)
-)
-GO
-
-print '' print '*** NEED TO INSERT RECORDS FOR PET TYPE HERE ***'
 
 
 print '' print ' ***Creating Pet Table'
@@ -277,6 +276,104 @@ print '' print ' *********** TABLES END HERE *********** '
 
 print '' print ' *********** FK CONSTRAINTS START HERE *********** '
 
+print '' print '*** Adding foreign key AccountOwnerID for Order'
+ALTER TABLE [dbo].[Order] WITH NOCHECK 
+	ADD CONSTRAINT [fk_AccountOwnerID] FOREIGN KEY([AccountOwnerID])
+	REFERENCES [dbo].[AccountOwner]([AccountOwnerID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key ItemTypeID for Item'
+ALTER TABLE [dbo].[Item] WITH NOCHECK 
+	ADD CONSTRAINT [fk_ItemTypeID] FOREIGN KEY([ItemTypeID])
+	REFERENCES [dbo].[ItemType]([ItemTypeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key EmployeeTypeID for Employee'
+ALTER TABLE [dbo].[Employee] WITH NOCHECK 
+	ADD CONSTRAINT [fk_EmployeeTypeID] FOREIGN KEY([EmployeeTypeID])
+	REFERENCES [dbo].[EmployeeType]([EmployeeTypeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key PetTypeID for Breed'
+ALTER TABLE [dbo].[Breed] WITH NOCHECK 
+	ADD CONSTRAINT [fk_PetTypeID] FOREIGN KEY([PetTypeID])
+	REFERENCES [dbo].[PetType]([PetTypeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key PetTypeID for Pet'
+ALTER TABLE [dbo].[Pet] WITH NOCHECK 
+	ADD CONSTRAINT [fk_AccountOwnerID_Pet] FOREIGN KEY([AccountOwnerID])
+	REFERENCES [dbo].[AccountOwner]([AccountOwnerID])
+	ON UPDATE CASCADE
+GO
+
+
+print '' print '*** Adding foreign key AccountOwnerID for Pet'
+ALTER TABLE [dbo].[Pet] WITH NOCHECK 
+	ADD CONSTRAINT [fk_PetTypeID_Pet] FOREIGN KEY([PetTypeID])
+	REFERENCES [dbo].[PetType]([PetTypeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key AccountOwnerID for Appointment'
+ALTER TABLE [dbo].[Appointment] WITH NOCHECK 
+	ADD CONSTRAINT [fk_AccountOwnerID_Appointment] FOREIGN KEY([AccountOwnerID])
+	REFERENCES [dbo].[AccountOwner]([AccountOwnerID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key Pet for Appointment'
+ALTER TABLE [dbo].[Appointment] WITH NOCHECK 
+	ADD CONSTRAINT [fk_PetID] FOREIGN KEY([PetID])
+	REFERENCES [dbo].[Pet]([PetID])
+GO
+
+print '' print '*** Adding foreign key EmployeeID for Appoinment'
+ALTER TABLE [dbo].[Appointment] WITH NOCHECK 
+	ADD CONSTRAINT [fk_EmployeeID] FOREIGN KEY([EmployeeID])
+	REFERENCES [dbo].[Employee]([EmployeeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key AppointmentTypeID for Appointment'
+ALTER TABLE [dbo].[Appointment] WITH NOCHECK 
+	ADD CONSTRAINT [fk_AppointmentTypeID] FOREIGN KEY([AppointmentTypeID])
+	REFERENCES [dbo].[AppointmentType]([AppointmentTypeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key DrugTypeID for Drug'
+ALTER TABLE [dbo].[Drug] WITH NOCHECK 
+	ADD CONSTRAINT [fk_DrugTypeID] FOREIGN KEY([DrugTypeID])
+	REFERENCES [dbo].[DrugType]([DrugTypeID])
+	ON UPDATE CASCADE
+GO
+
+
+print '' print '*** Adding foreign key PetID for Prescription'
+ALTER TABLE [dbo].[Prescription] WITH NOCHECK 
+	ADD CONSTRAINT [fk_PetID_Prescription] FOREIGN KEY([PetID])
+	REFERENCES [dbo].[Pet]([PetID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key EmployeeID for Prescription'
+ALTER TABLE [dbo].[Prescription] WITH NOCHECK 
+	ADD CONSTRAINT [fk_EmployeeID_Prescription] FOREIGN KEY([EmployeeID])
+	REFERENCES [dbo].[Employee]([EmployeeID])
+	ON UPDATE CASCADE
+GO
+
+print '' print '*** Adding foreign key DrugID for Prescription'
+ALTER TABLE [dbo].[Prescription] WITH NOCHECK 
+	ADD CONSTRAINT [fk_DrugID] FOREIGN KEY([DrugID])
+	REFERENCES [dbo].[Drug]([DrugID])
+	ON UPDATE CASCADE
+GO
 
 print '' print ' *********** FK CONSTRAINTS END HERE *********** '
 
