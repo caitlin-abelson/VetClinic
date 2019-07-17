@@ -46,6 +46,7 @@ CREATE TABLE [dbo].[AccountOwner] (
 GO
 
 print '' print '*** Inserting Account Owner Test Records ***'
+GO
 INSERT INTO [dbo].[AccountOwner]
 		([FirstName], [LastName], [Email], [Address], [City], [Zipcode], [DateCreated])
 	VALUES
@@ -56,6 +57,8 @@ INSERT INTO [dbo].[AccountOwner]
 		('Peter', 'Quinn', 'pquinn@gmail.com', '500 18th St SE', 'Cedar Rapids', '52402', '2009-10-13')
 GO	
 
+print '' print '*** NEED TO INSERT INACTIVE ACCOUNT OWNER TEST DATA ***'
+GO
 
 print '' print ' *** Creating Order Table'
 GO
@@ -69,6 +72,7 @@ CREATE TABLE [dbo].[Order] (
 GO
 
 print '' print '*** Inserting Order Test Records ***'
+GO
 INSERT INTO [dbo].[Order]
 		([AccountOwnerID], [DateCreated])
 	VALUES
@@ -102,48 +106,106 @@ CREATE TABLE [dbo].[ItemType] (
 GO
 
 print '' print '*** Inserting Item Type Test Records ***'
+GO
 INSERT INTO [dbo].[ItemType]
 		([ItemTypeID], [Description])
 	VALUES
-		('Puppy Food', 'Food for all dogs ages 2 years and younger.'),
-		('Adult Dog Food', 'Food for all dogs ages 2 years and older.'),
-		('Senior Dog Food', 'Food for all dogs ages 10 years and older.'),
-		('Weight Management Dog Food', 'Food for your chubby puppies.'),
-		('Kitten Food', 'Wet food formulated for kittens 6 months or younger.'),
-		('Dry Cat Food', 'Dry cat food'),
-		('Canned Cat Food', 'Wet cat food in 659 flavors.'),
-		('Weight Management Cat Food', 'Vegan and gluten free!.'),
+		('Dog Food', 'Food for all dogs of all ages.'),
+		('Cat Food', 'Food for all cats of all ages.'),
 		('Cat Toys', 'Hair ties, paper bags, and cat nip.'),
-		('Dog Toys', 'Toys for dogs of all ages.')
+		('Dog Toys', 'Toys for dogs of all ages.'),
+		('Dog Health', 'Flea, tick, heart worm prevention.'),
+		('Cat Health', 'Flea prevention and mental health remedies.')
 GO
 	
 print '' print ' ***Creating Item Table'
 GO
 CREATE TABLE [dbo].[Item] (
-	[ItemID]				[nvarchar](25)		NOT NULL,
-	[ItemTypeID]			[nvarchar](50)		NOT NULL,
-	[Price]					[decimal](5,2)		NOT NULL,
-	[Quantity]				[int]				NOT NULL,
+	[ItemID]				[int]IDENTITY(10000, 1)		NOT NULL,
+	[Name]					[nvarchar](50)				NOT NULL,
+	[ItemTypeID]			[nvarchar](50)				NOT NULL,
+	[Price]					[decimal](5,2)				NOT NULL,
 	
 	CONSTRAINT [pk_ItemID] PRIMARY KEY([ItemID] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR ITEM HERE ***'
-
+print '' print '*** Inserting Item Test Records ***'
+GO
+INSERT INTO [dbo].[Item]
+		([Name], [ItemTypeID], [Price])
+	VALUES
+		('Puppy Chow', 'Dog Food', 19.99),
+		('Chicken and Rice', 'Dog Food', 25.50),
+		('Beef and Carrots', 'Dog Food', 25.50),
+		('Senior Diet', 'Dog Food', 32.99),
+		('Weight Management', 'Dog Food', 35.00),
+		('Chicken, 6 cans', 'Cat Food', 6.99),
+		('Chicken, 10 cans', 'Cat Food', 10.99),
+		('Surf & Turf', 'Cat Food', 17.99),
+		('Chubby Kitty', 'Cat Food', 19.99),
+		('Vegan & Gluten Free', 'Cat Food', 38.65),
+		('Cat Nip Mice', 'Cat Toys', 2.99),
+		('Lazer Pointer', 'Cat Toys', 9.99),
+		('Exercise Ball', 'Cat Toys', 29.50),
+		('Tennis Ball, 3 pack', 'Dog Toys', 5.50),
+		('Tug-a-Rope', 'Dog Toys', 19.99),
+		('Stuffed Duck', 'Dog Toys', 15.50),
+		('Triple Care Drops', 'Dog Health', 79.98),
+		('Flea Coller', 'Dog Health', 19.95),
+		('Flea Spray', 'Cat Health', 49.95),
+		('Calming Spray', 'Cat Health', 29.00)
+GO
 
 
 print '' print ' ***Creating Order Line Table'
 GO
 CREATE TABLE [dbo].[OrderLine] (
 	[OrderID]				[int]				NOT NULL,
-	[ItemID]				[nvarchar](25)		NOT NULL,
+	[ItemID]				[int]				NOT NULL,
+	[Quantity]				[int]				NOT NULL,
 	
-	CONSTRAINT [pk_OrderLines] PRIMARY KEY([OrderID], [ItemID] ASC),
+	CONSTRAINT [pk_OrderLines] PRIMARY KEY([OrderID] ASC, [ItemID] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR ORDER LINE HERE ***'
+print '' print '*** Inserting Order Line Test Records ***'
+GO
+INSERT INTO [dbo].[OrderLine]
+		([OrderID], [ItemID], [Quantity])
+	VALUES
+		(10000, 10001, 1),
+		(10000, 10018, 1),
+		(10000, 10002, 3),
+		(10000, 10005, 1),
+		(10000, 10010, 1),
+		(10000, 10012, 2),
+		(10001, 10002, 8),
+		(10002, 10019, 1),
+		(10002, 10001, 1),
+		(10003, 10002, 2),
+		(10003, 10004, 1),
+		(10004, 10011, 1),
+		(10005, 10013, 1),
+		(10005, 10008, 1),
+		(10005, 10009, 1),
+		(10006, 10003, 1),
+		(10006, 10009, 1),
+		(10007, 10018, 1),
+		(10008, 10006, 1),
+		(10009, 10000, 1),
+		(10009, 10012, 2),
+		(10009, 10013, 2),
+		(10010, 10007, 1),
+		(10011, 10010, 1),
+		(10012, 10008, 1),
+		(10012, 10002, 2),
+		(10013, 10019, 1),
+		(10014, 10019, 2),
+		(10014, 10013, 1),
+		(10015, 10003, 1),
+		(10015, 10005, 1)
+GO
 
 
 print '' print ' ***Creating Appointment Type Table'
@@ -210,6 +272,7 @@ CREATE TABLE [dbo].[Employee] (
 GO
 
 print '' print '*** Inserting Employee Test Records ***'
+GO
 INSERT INTO [dbo].[Employee]
 		([EmployeeTypeID], [FirstName], [LastName], [Email], [StartDate])
 	VALUES
@@ -232,9 +295,14 @@ CREATE TABLE [dbo].[PetType] (
 )
 GO
 
-print '' print '*** NEED TO DO: Inserting Pet Type Test Records ***'
-
-
+print '' print '*** Inserting Pet Type Test Records ***'
+GO
+INSERT INTO [dbo].[PetType]
+		([PetTypeID])
+	VALUES
+		('Cat'),
+		('Dog')
+GO
 
 print '' print ' ***Creating Breed Table'
 GO
@@ -246,29 +314,49 @@ CREATE TABLE [dbo].[Breed] (
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR BREED HERE ***'
-
+print '' print '*** Inserting Breed Test Data ***'
+GO
+INSERT INTO [dbo].[Breed]
+		([PetTypeID], [BreedID])
+	VALUES
+		('Cat', 'Domestic Short Hair'),
+		('Cat', 'Domestic Medium Hair'),
+		('Cat', 'Domestic Long Hair'),
+		('Cat', 'Maine Coon'),
+		('Cat', 'Bangle'),
+		('Dog', 'Lab Mix'),
+		('Dog', 'Chocolate Lab'),
+		('Dog', 'Black Lab'),
+		('Dog', 'Yellow Lab'),
+		('Dog', 'German Shepard'),
+		('Dog', 'Corgi'),
+		('Dog', 'St. Bernard'),
+		('Dog', 'English Springer Spanel'),
+		('Dog', 'Border Collie')
+GO
 
 print '' print ' ***Creating Pet Table'
 GO
 CREATE TABLE [dbo].[Pet] (
-	[PetID]					[int]				NOT NULL,
-	[AccountOwnerID]		[int]				NOT NULL,
-	[PetTypeID]				[nvarchar](50)		NOT NULL,
-	[Name]					[nvarchar](50)		NOT NULL,
-	[Age]					[int]				NOT NULL,
-	[Weight]				[decimal](3,2)		NOT NULL,
-	[Color]					[nvarchar](50)		NOT NULL,
-	[Gender]				[nvarchar](50)		NOT NULL,
-	[Fixed]					[bit]				NOT NULL DEFAULT 0,
-	[Birthday]				[date]				NOT NULL,
-	[Active]				[bit]				NOT NULL DEFAULT 1,
+	[PetID]					[int] IDENTITY(10000, 1)	NOT NULL,
+	[AccountOwnerID]		[int]						NOT NULL,
+	[PetTypeID]				[nvarchar](50)				NOT NULL,
+	[Name]					[nvarchar](50)				NOT NULL,
+	[Age]					[int]						NOT NULL,
+	[Weight]				[decimal](3,2)				NOT NULL,
+	[Color]					[nvarchar](50)				NOT NULL,
+	[Gender]				[nvarchar](50)				NOT NULL,
+	[Fixed]					[bit]						NOT NULL DEFAULT 0,
+	[Birthday]				[date]						NOT NULL,
+	[Active]				[bit]						NOT NULL DEFAULT 1,
 	
 	CONSTRAINT [pk_PetID] PRIMARY KEY([PetID] ASC),
 	CONSTRAINT [ak_AccountOwnerIDPet] UNIQUE([AccountOwnerID] ASC)
 )
 GO
 
+
+print '' print '*** DANI LEFT OFF HERE.  Should PetTypeID be linked to to Pet table or should it be BreedID instead???***'
 print '' print '*** NEED TO INSERT RECORDS FOR PET HERE ***'
 
 
