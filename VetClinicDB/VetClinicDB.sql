@@ -340,25 +340,34 @@ GO
 CREATE TABLE [dbo].[Pet] (
 	[PetID]					[int] IDENTITY(10000, 1)	NOT NULL,
 	[AccountOwnerID]		[int]						NOT NULL,
-	[PetTypeID]				[nvarchar](50)				NOT NULL,
+	[BreedID]				[nvarchar](250)				NOT NULL,
 	[Name]					[nvarchar](50)				NOT NULL,
 	[Age]					[int]						NOT NULL,
-	[Weight]				[decimal](3,2)				NOT NULL,
+	[Weight]				[decimal](4,2)				NOT NULL,
 	[Color]					[nvarchar](50)				NOT NULL,
 	[Gender]				[nvarchar](50)				NOT NULL,
 	[Fixed]					[bit]						NOT NULL DEFAULT 0,
 	[Birthday]				[date]						NOT NULL,
 	[Active]				[bit]						NOT NULL DEFAULT 1,
 	
-	CONSTRAINT [pk_PetID] PRIMARY KEY([PetID] ASC),
-	CONSTRAINT [ak_AccountOwnerIDPet] UNIQUE([AccountOwnerID] ASC)
+	CONSTRAINT [pk_PetID] PRIMARY KEY([PetID] ASC)
 )
 GO
 
 
-print '' print '*** DANI LEFT OFF HERE.  Should PetTypeID be linked to to Pet table or should it be BreedID instead???***'
-print '' print '*** NEED TO INSERT RECORDS FOR PET HERE ***'
-
+GO
+INSERT INTO [dbo].[Pet]
+	([AccountOwnerID], [BreedID], [Name], [Age], [Weight], [Color], [Gender], [Fixed], [Birthday], [Active])
+	VALUES
+	('10000', 'Domestic Shorthair', 'Scrambles', 2, 9.7, 'Grey Tabby', 'Male', 1, '07-04-2017', 1),
+	('10000', 'Domestic Shorthair', 'Tybalt', 5, 13.4, 'Brown and Black', 'Male', 1, '05-01-2014', 1),
+	('10000', 'Domestic Medium Hair', 'Wilder', 4, 12.8, 'Orange', 'Male', 1, '05-31-2015', 1),
+	('10001', 'Domestic Short Hair', 'Mika', 4, 10.2, 'Brown Tabby', 'Female', 1, '10-20-2015', 1),
+	('10001', 'Domestic Short Hair', 'Ren', 3, 12.3, 'Black and White', 'Male', 1, '05-03-2016', 1),
+	('10002', 'Corgi', 'Sir Lancelot', 6, 27.9, 'Yellow and White', 'Male', 1, '11-21-2012', 1),
+	('10003', 'Border Collie', 'Bandit', 2, 22.3, 'Black and White', 'Male', 1, '01-19-2017', 1),
+	('10003', 'Maine Coon', 'Taco', 5, 11.9, 'Black and Grey', 'Female', 1, '07-27-2014', 1),
+	('10004', 'Chocolate Lab', 'Hank', 9, 76.4, 'Brown', 'Male', 1, '02-13-2010', 1)
 
 
 print '' print ' ***Creating Appointment Table'
@@ -407,7 +416,7 @@ GO
 print '' print ' ***Creating Drug Table'
 GO
 CREATE TABLE [dbo].[Drug] (
-	[DrugID]				[int] IDENTITY			NOT NULL,
+	[DrugID]				[int] IDENTITY		NOT NULL,
 	[DrugTypeID]			[nvarchar](50)		NOT NULL,
 	[Name]					[nvarchar](100)		NOT NULL,
 	[Description]			[nvarchar](1000)	NOT NULL,
@@ -501,10 +510,10 @@ ALTER TABLE [dbo].[Pet] WITH NOCHECK
 GO
 
 
-print '' print '*** Adding foreign key AccountOwnerID for Pet'
+print '' print '*** Adding foreign key BreedID for Pet'
 ALTER TABLE [dbo].[Pet] WITH NOCHECK 
-	ADD CONSTRAINT [fk_PetTypeID_Pet] FOREIGN KEY([PetTypeID])
-	REFERENCES [dbo].[PetType]([PetTypeID])
+	ADD CONSTRAINT [fk_BreedID] FOREIGN KEY([BreedID])
+	REFERENCES [dbo].[Breed]([BreedID])
 	ON UPDATE CASCADE
 GO
 
