@@ -285,6 +285,14 @@ INSERT INTO [dbo].[Employee]
 		('Receptionist', 'Thomas', 'Chains', 'txchain@freyvet.com', '2014-08-23')
 GO
 
+print '' print '*** Inserting Inactive Employee Test Records ***'
+GO
+INSERT INTO [dbo].[Employee]
+		([EmployeeTypeID], [FirstName], [LastName], [Email], [StartDate], [EndDate], [Active])
+	VALUES
+		('Veterinarian', 'Glynnis', 'Waters', 'gwaters@freyvet.com', '2009-04-20', '2010-01-01', 0),
+		('Veterinarian Technician', 'Lex', 'Pika', 'pikapika@freyvet.com', '2010-11-15', '2018-05-03', 0)
+GO
 
 print '' print ' ***Creating Pet Type Table'
 GO
@@ -365,7 +373,7 @@ INSERT INTO [dbo].[Pet]
 	('10001', 'Domestic Short Hair', 'Mika', 4, 10.2, 'Brown Tabby', 'Female', 1, '10-20-2015', 1),
 	('10001', 'Domestic Short Hair', 'Ren', 3, 12.3, 'Black and White', 'Male', 1, '05-03-2016', 1),
 	('10002', 'Corgi', 'Sir Lancelot', 6, 27.9, 'Yellow and White', 'Male', 1, '11-21-2012', 1),
-	('10003', 'Border Collie', 'Bandit', 2, 22.3, 'Black and White', 'Male', 1, '01-19-2017', 1),
+	('10003', 'Border Collie', 'Sandbag', 2, 22.3, 'Black and White', 'Male', 1, '01-19-2017', 1),
 	('10003', 'Maine Coon', 'Taco', 5, 11.9, 'Black and Grey', 'Female', 1, '07-27-2014', 1),
 	('10004', 'Chocolate Lab', 'Hank', 9, 76.4, 'Brown', 'Male', 1, '02-13-2010', 1)
 
@@ -373,23 +381,30 @@ INSERT INTO [dbo].[Pet]
 print '' print ' ***Creating Appointment Table'
 GO
 CREATE TABLE [dbo].[Appointment] (
-	[AppointmentID]			[int]				NOT NULL,
-	[AppointmentTypeID]		[nvarchar](50)		NOT NULL,
-	[AccountOwnerID]		[int]				NOT NULL,
-	[PetID]					[int]				NOT NULL,
-	[EmployeeID]			[int]				NOT NULL,
-	[DateCreated]			[date]				NOT NULL,
-	[AppointmentDate]		[date]				NOT NULL,
-	[StartTime]				[time]				NOT NULL,
-	[EndTime]				[time]				NOT NULL,
-	[CheckedIn]				[bit]				NOT NULL DEFAULT 0,
+	[AppointmentID]			[int]IDENTITY(10000, 1)	NOT NULL,
+	[AppointmentTypeID]		[nvarchar](50)			NOT NULL,
+	[AccountOwnerID]		[int]					NOT NULL,
+	[PetID]					[int]					NOT NULL,
+	[EmployeeID]			[int]					NOT NULL,
+	[DateCreated]			[date]					NOT NULL,
+	[AppointmentDate]		[date]					NOT NULL,
+	[StartTime]				[time]					NOT NULL,
+	[EndTime]				[time]					NOT NULL,
+	[CheckedIn]				[bit]					NOT NULL DEFAULT 0,
 	
 	CONSTRAINT [pk_AppointmentID] PRIMARY KEY([AppointmentID] ASC)
 )
 GO
 
-print '' print '*** NEED TO INSERT RECORDS FOR APPOINTMENT HERE ***'
-
+print '' print '*** Inserting Appointment Test Records ***'
+GO
+INSERT INTO [dbo].[Appointment]
+		([AppointmentTypeID],[AccountOwnerID],[PetID],[EmployeeID],[DateCreated],[AppointmentDate],[StartTime],[EndTime], [CheckedIn])
+	VALUES
+		('General Checkup & Vaccination', 10000, 10000, 10000,'2019-06-05','2019-06-22','09:00:00','09:10:00', 0),
+		('Sick Visit', 10000, 10001, 10003,'2019-04-20','2019-04-21','13:30:00','13:40:00', 1),
+		('Follow-up', 10001, 10003, 10000,'2019-06-15','2019-07-01','08:40:00','09:00:00', 0)
+GO
 
 print '' print ' ***Creating Drug Type Table'
 GO
